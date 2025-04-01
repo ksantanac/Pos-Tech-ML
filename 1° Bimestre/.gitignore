@@ -1,0 +1,66 @@
+# Ambiente virtual Python
+env/
+venv/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.secrets
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE/Editores
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs e banco de dados local
+*.log
+*.sqlite
+*.db
+
+# Arquivos gerados pelo Flask
+instance/
+.webassets-cache
+
+# Arquivos de build/distribuição
+dist/
+build/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+# Arquivos temporários
+*.tmp
+*.bak
+*~
+
+# Arquivos de teste/coverage
+.coverage
+htmlcov/
+.pytest_cache/
+test-results.xml
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# macOS
+.DS_Store
