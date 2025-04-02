@@ -1,0 +1,186 @@
+
+
+paths:
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: Registrar novo usuário
+      description: Cria uma nova conta de usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example1:
+                value:
+                  username: "chef_john"
+                  password: "senhasecreta123"
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '400':
+          description: Erro na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: Login do usuário
+      description: Autentica o usuário e retorna um token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Login bem-sucedido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+        '401':
+          description: Credenciais inválidas
+
+  /recipes:
+    post:
+      tags:
+        - Recipes
+      summary: Criar nova receita
+      description: Cria uma nova receita (requer autenticação)
+      security:
+        - JWT: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '201':
+          description: Receita criada com sucesso
+        '400':
+          description: Dados inválidos
+        '401':
+          description: Não autorizado
+
+    get:
+      tags:
+        - Recipes
+      summary: Listar receitas
+      description: Retorna receitas com filtros opcionais
+      security:
+        - JWT: []
+      parameters:
+        - name: ingredient
+          in: query
+          schema:
+            type: string
+          description: Filtrar por ingrediente
+        - name: max_time
+          in: query
+          schema:
+            type: integer
+          description: Filtrar por tempo máximo (minutos)
+      responses:
+        '200':
+          description: Lista de receitas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+        '401':
+          description: Não autorizado
+
+  /recipes/{recipe_id}:
+    get:
+      tags:
+        - Recipes
+      summary: Obter receita por ID
+      description: Retorna os detalhes de uma receita específica
+      security:
+        - JWT: []
+      parameters:
+        - name: recipe_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalhes da receita
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Receita não encontrada
+
+    put:
+      tags:
+        - Recipes
+      summary: Atualizar receita
+      description: Atualiza os dados de uma receita existente
+      security:
+        - JWT: []
+      parameters:
+        - name: recipe_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '200':
+          description: Receita atualizada
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Receita não encontrada
+
+    delete:
+      tags:
+        - Recipes
+      summary: Excluir receita
+      description: Remove permanentemente uma receita
+      security:
+        - JWT: []
+      parameters:
+        - name: recipe_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Receita excluída
+        '404':
+          description: Receita não encontrada
